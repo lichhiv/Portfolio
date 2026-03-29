@@ -46,6 +46,7 @@ if (pageLoader) {
 
 const menuToggle = document.getElementById("menu-toggle");
 const mainNav = document.getElementById("main-nav");
+const siteHeaderEl = document.querySelector(".site-header");
 const year = document.getElementById("year");
 
 if (year) {
@@ -53,18 +54,31 @@ if (year) {
 }
 
 if (menuToggle && mainNav) {
-  menuToggle.addEventListener("click", () => {
-    const isOpen = mainNav.classList.toggle("is-open");
+  function setMobileMenuOpen(isOpen) {
+    mainNav.classList.toggle("is-open", isOpen);
     menuToggle.setAttribute("aria-expanded", String(isOpen));
     menuToggle.setAttribute("aria-label", isOpen ? "Fermer le menu" : "Ouvrir le menu");
+    if (siteHeaderEl) {
+      siteHeaderEl.classList.toggle("site-header--menu-open", isOpen);
+    }
+    document.body.classList.toggle("nav-menu-open", isOpen);
+  }
+
+  menuToggle.addEventListener("click", () => {
+    const isOpen = !mainNav.classList.contains("is-open");
+    setMobileMenuOpen(isOpen);
   });
 
   mainNav.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", () => {
-      mainNav.classList.remove("is-open");
-      menuToggle.setAttribute("aria-expanded", "false");
-      menuToggle.setAttribute("aria-label", "Ouvrir le menu");
+      setMobileMenuOpen(false);
     });
+  });
+
+  window.addEventListener("resize", () => {
+    if (window.matchMedia("(min-width: 701px)").matches && mainNav.classList.contains("is-open")) {
+      setMobileMenuOpen(false);
+    }
   });
 }
 

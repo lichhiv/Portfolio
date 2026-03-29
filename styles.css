@@ -225,6 +225,13 @@ button:focus-visible {
   backdrop-filter: blur(12px);
 }
 
+/* Menu mobile ouvert : fond opaque pour que les liens ne se mélangent pas au hero */
+.site-header--menu-open {
+  background: rgba(5, 5, 5, 0.97);
+  border-bottom-color: var(--border);
+  backdrop-filter: blur(14px);
+}
+
 .nav-wrapper {
   display: flex;
   align-items: center;
@@ -855,7 +862,10 @@ main .section>.container>p {
   .main-nav {
     display: none;
     width: 100%;
-    padding-top: 1rem;
+    flex-basis: 100%;
+    padding: 1rem 0 1.25rem;
+    margin-top: 0.35rem;
+    border-top: 1px solid var(--border);
   }
 
   .main-nav.is-open {
@@ -872,5 +882,10 @@ main .section>.container>p {
   .main-nav ul {
     flex-direction: column;
     gap: 0.85rem;
+  }
+
+  /* Évite le scroll du contenu derrière le menu déplié */
+  body.nav-menu-open {
+    overflow: hidden;
   }
 }
