@@ -1,12 +1,8 @@
 const pageLoader = document.getElementById("page-loader");
 const loaderStart = performance.now();
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const isAuditRun =
-  /lighthouse/i.test(navigator.userAgent) ||
-  /headlesschrome/i.test(navigator.userAgent) ||
-  new URLSearchParams(window.location.search).has("noLoader");
 
-if (pageLoader && !isAuditRun) {
+if (pageLoader) {
   document.body.classList.add("is-loading");
 }
 
@@ -30,9 +26,7 @@ function hidePageLoader() {
 }
 
 if (pageLoader) {
-  if (isAuditRun) {
-    pageLoader.remove();
-  } else if (reducedMotion) {
+  if (reducedMotion) {
     window.setTimeout(hidePageLoader, 450);
   } else {
     const minVisible = 1400;
@@ -120,11 +114,7 @@ function onScrollNav() {
   }
 }
 
-updateActiveLink();
-const siteHeaderInit = document.querySelector(".site-header");
-if (siteHeaderInit) {
-  siteHeaderInit.classList.toggle("site-header--scrolled", window.scrollY > 48);
-}
+onScrollNav();
 window.addEventListener("scroll", onScrollNav);
 
 const revealTargets = document.querySelectorAll(
@@ -145,7 +135,7 @@ const revealTargets = document.querySelectorAll(
   ].join(", ")
 );
 
-if (isAuditRun || reducedMotion) {
+if (reducedMotion) {
   revealTargets.forEach((element) => element.classList.add("is-visible"));
 } else {
   revealTargets.forEach((element) => element.classList.add("reveal"));
